@@ -99,7 +99,7 @@ services:
       - traefik.http.routers.adminer.rule=Host(`$ADMINER_UI_DNS`)
       - traefik.http.routers.adminer.entrypoints=web
       - traefik.http.routers.adminer.service=adminer
-      - traefik.http.services.adminer.loadbalancer.server.port=8080
+      - traefik.http.services.adminer.loadbalancer.server.port=$ADMINER_HTTP_PORT
       
 volumes:
   postgresdata:
