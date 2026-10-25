@@ -1,0 +1,107 @@
+x-common-talaxie-config: &common-talaxie-config
+    shm_size: 1gb
+    environment:
+      - VNC_PW
+    volumes:
+      - talaxie_home:/home/kasm-user
+      - talaxie_configuration:/opt/talaxie/configuration
+    restart: unless-stopped
+
+services:
+  traefik:
+    image: traefik:3.7.16
+    ports:
+      # Exposes port 80 for incomming web requests
+      - 80:80
+      # The Web UI port http://0.0.0.0:8080 (enabled by --api.insecure=true)
+      - 8080:8080
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./app/traefik/conf/traefik.yml:/etc/traefik/traefik.yml
+
+  kasm-talaxie-di:
+    image: kasm-talaxie-di
+    build:
+      context: app/kasm-talaxie
+      args:
+        TALAXIE_VERSION: 20261020_1824-V8.9.0SNAPSHOT
+        TALAXIE_EXE: TOS_DI
+    profiles:
+      - di
+    labels:
+        - traefik.enable=true
+        - traefik.http.routers.kasm-talaxie-di.rule=Host(`$TALAXIE_DNS`)
+        - traefik.http.services.kasm-talaxie-di.loadbalancer.server.scheme=https
+        - traefik.http.routers.kasm-talaxie-di.entrypoints=web
+        - traefik.http.routers.kasm-talaxie-di.service=kasm-talaxie-di
+        - traefik.http.services.kasm-talaxie-di.loadbalancer.server.port=$KASM_HTTP_PORT
+    <<: *common-talaxie-config
+    
+  kasm-talaxie-esb:
+    image: kasm-talaxie-esb
+    build:
+      context: app/kasm-talaxie
+      args:
+        TALAXIE_VERSION: 20261020_1824-V8.9.0SNAPSHOT
+        TALAXIE_EXE: TOS_ESB
+    profiles:
+      - esb
+    labels:
+        - traefik.enable=true
+        - traefik.http.routers.kasm-talaxie-esb.rule=Host(`$TALAXIE_DNS`)
+        - traefik.http.services.kasm-talaxie-esb.loadbalancer.server.scheme=https
+        - traefik.http.routers.kasm-talaxie-esb.entrypoints=web
+        - traefik.http.routers.kasm-talaxie-esb.service=kasm-talaxie-esb
+        - traefik.http.services.kasm-talaxie-esb.loadbalancer.server.port=$KASM_HTTP_PORT
+    <<: *common-talaxie-config
+
+  kasm-talaxie-bd:
+    image: kasm-talaxie-bd
+    build:
+      context: app/kasm-talaxie
+      args:
+        TALAXIE_VERSION: 20261020_1824-V8.9.0SNAPSHOT
+        TALAXIE_EXE: TOS_BD
+    profiles:
+      - bd
+    labels:
+        - traefik.enable=true
+        - traefik.http.routers.kasm-talaxie-bd.rule=Host(`$TALAXIE_DNS`)
+        - traefik.http.services.kasm-talaxie-bd.loadbalancer.server.scheme=https
+        - traefik.http.routers.kasm-talaxie-bd.entrypoints=web
+        - traefik.http.routers.kasm-talaxie-bd.service=kasm-talaxie-bd
+        - traefik.http.services.kasm-talaxie-bd.loadbalancer.server.port=$KASM_HTTP_PORT
+    <<: *common-talaxie-config
+
+  postgres:
+    # Extend official images with postgres-contrib
+    image: postgres:latest-contrib
+    build: db/postgres
+    hostname: postgres
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    labels:
+        - traefik.enable=true
+        - traefik.tcp.routers.postgres.rule=HostSNI(`*`)
+        - traefik.tcp.routers.postgres.entrypoints=postgres
+        - traefik.tcp.services.postgres.loadbalancer.server.port=$POSTGRES_TCP_PORT
+    volumes:
+      - postgresdata:/var/lib/postgresql
+      # Volume with custom scripts to be run after database initialization
+      - ./db/postgres/scripts:/docker-entrypoint-initdb.d
+
+  adminer:
+    image: adminer
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.adminer.rule=Host(`$ADMINER_UI_DNS`)
+      - traefik.http.routers.adminer.entrypoints=web
+      - traefik.http.routers.adminer.service=adminer
+      - traefik.http.services.adminer.loadbalancer.server.port=8080
+      
+volumes:
+  postgresdata:
+  talaxie_home:
+  talaxie_configuration:

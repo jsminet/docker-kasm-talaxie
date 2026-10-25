@@ -1,0 +1,41 @@
+################################################################
+# API and dashboard configuration
+################################################################
+api:
+  # Dashboard
+  dashboard: true
+  insecure: true
+  
+################################################################
+# Docker configuration backend
+################################################################
+providers:
+  #swarm:
+  #  endpoint: "unix:///var/run/docker.sock"
+  #  exposedByDefault: false
+  docker:
+    exposedByDefault: false
+    watch: true
+
+################################################################
+# Traefik Logging
+################################################################
+log:
+  level: INFO
+
+################################################################
+# Entrypoint
+################################################################
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+  oracle-xe:
+    address: ":1521"
+
+################################################################
+# Auto signed certificate
+################################################################
+serversTransport:
+  insecureSkipVerify: true
