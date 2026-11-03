@@ -41,6 +41,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && sed -i '/^-vmargs/i -vm\n/usr/lib/jvm/java-21-openjdk-amd64/bin/java' "$INI" \
     && printf '\n-Xms4g\n-Xmx8g\n-Dswt.autoScale=100\n' >> "$INI" \
     && chown -R 1000:0 /opt/talaxie \
+# Update the desktop environment to be optimized for a single application
+    && cp $HOME/.config/xfce4/xfconf/single-application-xfce-perchannel-xml/* $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/ \
+    && cp /usr/share/backgrounds/bg_kasm.png /usr/share/backgrounds/bg_default.png \
+    && apt-get remove -y xfce4-panel \
     && rm -rf /var/lib/apt/lists/*
 
 ######### End Customizations ###########
