@@ -21,12 +21,14 @@ services:
       - ./app/traefik/conf/traefik.yml:/etc/traefik/traefik.yml
 
   kasm-talaxie-di:
-    image: kasm-talaxie-di
+    image: $TALAXIE_IMAGE:$TALAXIE_DI-$TALAXIE_VERSION
     build:
       context: app/kasm-talaxie
       args:
-        TALAXIE_VERSION: 20261020_1824-V8.9.0SNAPSHOT
-        TALAXIE_EXE: TOS_DI
+        TALAXIE_VERSION: $TALAXIE_VERSION
+        TALAXIE_EXE: $TALAXIE_DI
+        XMS: $XMS
+        XMX: $XMX
     profiles:
       - di
     labels:
@@ -39,12 +41,14 @@ services:
     <<: *common-talaxie-config
     
   kasm-talaxie-esb:
-    image: kasm-talaxie-esb
+    image: $TALAXIE_IMAGE:$TALAXIE_ESB-$TALAXIE_VERSION
     build:
       context: app/kasm-talaxie
       args:
-        TALAXIE_VERSION: 20261020_1824-V8.9.0SNAPSHOT
-        TALAXIE_EXE: TOS_ESB
+        TALAXIE_VERSION: $TALAXIE_VERSION
+        TALAXIE_EXE: $TALAXIE_ESB
+        XMS: $XMS
+        XMX: $XMX
     profiles:
       - esb
     labels:
@@ -57,12 +61,14 @@ services:
     <<: *common-talaxie-config
 
   kasm-talaxie-bd:
-    image: kasm-talaxie-bd
+    image: $TALAXIE_IMAGE:$TALAXIE_BD-$TALAXIE_VERSION
     build:
       context: app/kasm-talaxie
       args:
-        TALAXIE_VERSION: 20261020_1824-V8.9.0SNAPSHOT
-        TALAXIE_EXE: TOS_BD
+        TALAXIE_VERSION: $TALAXIE_VERSION
+        TALAXIE_EXE: $TALAXIE_BD
+        XMS: $XMS
+        XMX: $XMX
     profiles:
       - bd
     labels:
