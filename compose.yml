@@ -2,6 +2,15 @@ x-common-talaxie-config: &common-talaxie-config
     shm_size: 1gb
     environment:
       - VNC_PW
+    labels:
+        - traefik.enable=true
+        # http service config
+        - traefik.http.services.kasm-talaxie.loadbalancer.server.scheme=https
+        - traefik.http.services.kasm-talaxie.loadbalancer.server.port=$KASM_HTTP_PORT
+        # http router config
+        - traefik.http.routers.kasm-talaxie.rule=Host(`$TALAXIE_DNS`)
+        - traefik.http.routers.kasm-talaxie.entrypoints=web
+        - traefik.http.routers.kasm-talaxie.service=kasm-talaxie
     volumes:
       - talaxie_home:/home/kasm-user
       - talaxie_configuration:/opt/talaxie/configuration
@@ -31,13 +40,6 @@ services:
         XMX: $XMX
     profiles:
       - di
-    labels:
-        - traefik.enable=true
-        - traefik.http.routers.kasm-talaxie-di.rule=Host(`$TALAXIE_DNS`)
-        - traefik.http.services.kasm-talaxie-di.loadbalancer.server.scheme=https
-        - traefik.http.routers.kasm-talaxie-di.entrypoints=web
-        - traefik.http.routers.kasm-talaxie-di.service=kasm-talaxie-di
-        - traefik.http.services.kasm-talaxie-di.loadbalancer.server.port=$KASM_HTTP_PORT
     <<: *common-talaxie-config
     
   kasm-talaxie-esb:
@@ -51,13 +53,6 @@ services:
         XMX: $XMX
     profiles:
       - esb
-    labels:
-        - traefik.enable=true
-        - traefik.http.routers.kasm-talaxie-esb.rule=Host(`$TALAXIE_DNS`)
-        - traefik.http.services.kasm-talaxie-esb.loadbalancer.server.scheme=https
-        - traefik.http.routers.kasm-talaxie-esb.entrypoints=web
-        - traefik.http.routers.kasm-talaxie-esb.service=kasm-talaxie-esb
-        - traefik.http.services.kasm-talaxie-esb.loadbalancer.server.port=$KASM_HTTP_PORT
     <<: *common-talaxie-config
 
   kasm-talaxie-bd:
@@ -71,13 +66,6 @@ services:
         XMX: $XMX
     profiles:
       - bd
-    labels:
-        - traefik.enable=true
-        - traefik.http.routers.kasm-talaxie-bd.rule=Host(`$TALAXIE_DNS`)
-        - traefik.http.services.kasm-talaxie-bd.loadbalancer.server.scheme=https
-        - traefik.http.routers.kasm-talaxie-bd.entrypoints=web
-        - traefik.http.routers.kasm-talaxie-bd.service=kasm-talaxie-bd
-        - traefik.http.services.kasm-talaxie-bd.loadbalancer.server.port=$KASM_HTTP_PORT
     <<: *common-talaxie-config
 
   postgres:
