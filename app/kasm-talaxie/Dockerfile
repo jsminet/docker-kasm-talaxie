@@ -10,7 +10,8 @@ ARG XMS=4g
 ARG XMX=8g
 
 ENV HOME=/home/kasm-default-profile \
-    STARTUPDIR=/dockerstartup
+    STARTUPDIR=/dockerstartup \
+    INST_SCRIPTS=$STARTUPDIR/install
 
 WORKDIR $HOME
 
@@ -54,10 +55,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 ######### End Customizations ###########
 
-RUN chown 1000:0 $HOME
+RUN chown 1000:0 $HOME \
+    && $STARTUPDIR/set_user_permission.sh $HOME
 
 ENV HOME=/home/kasm-user
 WORKDIR $HOME
-RUN mkdir -p $HOME && chown -R 1000:0 $HOME
+
+RUN mkdir -p $HOME \
+    && chown -R 1000:0 $HOME
 
 USER 1000

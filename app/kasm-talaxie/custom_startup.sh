@@ -8,5 +8,5 @@ while true; do
     if ! pgrep -f $TALAXIE_EXE > /dev/null; then
         ./$TALAXIE_EXE -nosplash -data $HOME/workspace -consoleLog
     fi
-    sleep 10
+    sleep 2
 done
