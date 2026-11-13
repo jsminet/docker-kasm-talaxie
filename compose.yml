@@ -72,6 +72,8 @@ services:
     # Extend official images with postgres-contrib
     image: postgres:latest-contrib
     build: db/postgres
+    profiles:
+      - postgres
     hostname: postgres
     environment:
       - POSTGRES_USER
@@ -88,6 +90,8 @@ services:
 
   adminer:
     image: adminer
+    profiles:
+      - postgres
     labels:
       - traefik.enable=true
       - traefik.http.routers.adminer.rule=Host(`$ADMINER_UI_DNS`)
