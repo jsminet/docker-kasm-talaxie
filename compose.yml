@@ -12,7 +12,7 @@ x-common-talaxie-config: &common-talaxie-config
         - traefik.http.routers.kasm-talaxie.entrypoints=web
         - traefik.http.routers.kasm-talaxie.service=kasm-talaxie
     volumes:
-      - talaxie_home:/home/kasm-user
+      - kasm_home:/home/kasm-user
       - talaxie_configuration:/opt/talaxie/configuration
     restart: unless-stopped
 
@@ -101,5 +101,5 @@ services:
       
 volumes:
   postgresdata:
-  talaxie_home:
+  kasm_home:
   talaxie_configuration:
