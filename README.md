@@ -2,7 +2,7 @@
  
 This repository aims to install **a ready to use** Talaxie (eclipse RCP client) using docker compose, the idea is to leverage a Linux container using KasmVNC technology streaming the application to a web browser
 
-![Talaxie](images/005.jpg)
+![Talaxie](images/007.jpg)
     
 ## 🧐 Features
 
@@ -10,9 +10,9 @@ Talaxie is installed into an ubuntu 22.04 LTS jammy base image with all the need
 
 - Open JDK 21
 - GTK libraries + tuning for correct display rendering
-- TOS_DI.ini setup for Xms and Xmx java memory setup
-- A postgres database with fake data
-- An automated script for auto respawn the tool in case of restart or shutting down
+- Overrided setup for Xms and Xmx java heap memory
+- A postgres database with fake data and adminer tool (use profile -postgres)
+- An automated script respawning the tool in case of restart or shutting down
 
 About dockerfile
 
@@ -81,6 +81,8 @@ $ docker compose --profile bd down -v
 ##  Talaxie access
 
 Open your favorite web browser and navigate to **http://talaxie.localtest.me**
+
+![Talaxie](images/006.jpg)
 
 - User: **kasm_user**
 - Password: **changeme**
