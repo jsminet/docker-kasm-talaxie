@@ -27,11 +27,47 @@ About dockerfile
 
 ## 🧑🏻‍💻 Usage
 
-### Build and start
+### Getting started
+
+Download the [docker compose file](blob:https://github.com/8d9d93b2-d792-458b-95e8-a94636916bd2) or get the full repository
 
 ```bash
 $ git clone https://github.com/jsminet/docker-kasm-talaxie.git
 ```
+
+#### Pulling and Starting the stack
+
+```bash
+# For data integration
+$ docker compose --profile di up -d
+# For enterprise service bus
+$ docker compose --profile esb up -d 
+# For big data
+$ docker compose --profile bd up -d 
+```
+
+![Pulling and starting](images/003.jpg)
+
+####  Talaxie web access
+
+Open your favorite web browser and navigate to **http://talaxie.localtest.me**
+
+WARNING: some internet boxes block the redirection of **localtest.me**
+domain, you can add this entry in your host file
+
+```bash
+127.0.0.1 talaxie.localtest.me
+```
+
+![Talaxie](images/006.jpg)
+
+- User: **kasm_user**
+- Password: **changeme**
+
+### Build
+
+This step is not mandatory as these images are hosted on my [own docker hub](https://hub.docker.com/repository/docker/jsminet/docker-kasm-talaxie/general)
+
 
 #### Choose and get the needed Talaxie version
 
@@ -54,19 +90,6 @@ $ docker compose --profile bd build
 ![Building images](images/002.jpg)
 
 
-#### Pulling and Starting the stack
-
-```bash
-# For data integration
-$ docker compose --profile di up -d
-# For enterprise service bus
-$ docker compose --profile esb up -d 
-# For big data
-$ docker compose --profile bd up -d 
-```
-
-![Pulling and starting](images/003.jpg)
-
 #### Stopping and clean volumes
 
 ```bash
@@ -78,14 +101,7 @@ $ docker compose --profile esb down -v
 $ docker compose --profile bd down -v
 ```
 
-##  Talaxie access
 
-Open your favorite web browser and navigate to **http://talaxie.localtest.me**
-
-![Talaxie](images/006.jpg)
-
-- User: **kasm_user**
-- Password: **changeme**
 
 ## 🛠️ Database connection
 
