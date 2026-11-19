@@ -29,43 +29,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./app/traefik/conf/traefik.yml:/etc/traefik/traefik.yml
 
-  kasm-talaxie-di:
-    image: $TALAXIE_IMAGE:$TALAXIE_DI-$TALAXIE_VERSION
+  kasm-talaxie:
+    image: $TALAXIE_IMAGE:$TALAXIE_VERSION
     build:
       context: app/kasm-talaxie
       args:
-        TALAXIE_VERSION: $TALAXIE_VERSION
-        TALAXIE_EXE: $TALAXIE_DI
-        XMS: $XMS
-        XMX: $XMX
-    profiles:
-      - di
-    <<: *common-talaxie-config
-    
-  kasm-talaxie-esb:
-    image: $TALAXIE_IMAGE:$TALAXIE_ESB-$TALAXIE_VERSION
-    build:
-      context: app/kasm-talaxie
-      args:
-        TALAXIE_VERSION: $TALAXIE_VERSION
-        TALAXIE_EXE: $TALAXIE_ESB
-        XMS: $XMS
-        XMX: $XMX
-    profiles:
-      - esb
-    <<: *common-talaxie-config
-
-  kasm-talaxie-bd:
-    image: $TALAXIE_IMAGE:$TALAXIE_BD-$TALAXIE_VERSION
-    build:
-      context: app/kasm-talaxie
-      args:
-        TALAXIE_VERSION: $TALAXIE_VERSION
-        TALAXIE_EXE: $TALAXIE_BD
-        XMS: $XMS
-        XMX: $XMX
-    profiles:
-      - bd
+        - TALAXIE_VERSION
+        - TALAXIE_EXE
     <<: *common-talaxie-config
 
   postgres:
