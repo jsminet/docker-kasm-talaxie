@@ -27,7 +27,7 @@ ENV TALAXIE_EXE=$TALAXIE_EXE \
     WEBKIT_DISABLE_COMPOSITING_MODE=1 \
     GTK_OVERLAY_SCROLLING=0
 
-ADD --unpack=true $TALAXIE_EXE-$TALAXIE_VERSION.tar.gz /opt/talaxie
+ADD --unpack=true $TALAXIE_EXE-$TALAXIE_VERSION-linux.gtk.x86_64.tar.gz /opt/talaxie
 
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -37,7 +37,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libxtst6 \
         fonts-dejavu  \
         fonts-liberation \
-    && chmod +x /opt/talaxie/$TALAXIE_EXE-$TALAXIE_VERSION/$TALAXIE_EXE-linux-gtk-x86_64 \
+    && chmod +x /opt/talaxie/$TALAXIE_EXE \
     # Update the desktop environment to be optimized for a single application
     && cp $HOME/.config/xfce4/xfconf/single-application-xfce-perchannel-xml/* $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/ \
     && apt-get remove -y xfce4-panel \

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -ex
-START_COMMAND="/opt/talaxie/$TALAXIE_EXE-$TALAXIE_VERSION/$TALAXIE_EXE-linux-gtk-x86_64"
+START_COMMAND="/opt/talaxie/$TALAXIE_EXE"
 PGREP=$TALAXIE_EXE
 export MAXIMIZE="true"
 export MAXIMIZE_NAME="Talaxie"
