@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -ex
-START_COMMAND="/opt/talaxie/$TALAXIE_EXE-$TALAXIE_VERSION/$TALAXIE_EXE-linux-gtk-x86_64"
+START_COMMAND="/opt/talaxie/$TALAXIE_EXE/$TALAXIE_EXE"
 PGREP=$TALAXIE_EXE
 export MAXIMIZE="true"
 export MAXIMIZE_NAME="Talaxie"
 MAXIMIZE_SCRIPT=$STARTUPDIR/maximize_window.sh
-DEFAULT_ARGS="--launcher.appendVmargs -vmargs -Xms$XMS -Xmx$XMX"
+DEFAULT_ARGS=""
 ARGS=${APP_ARGS:-$DEFAULT_ARGS}
 
 options=$(getopt -o gau: -l go,assign,url: -n "$0" -- "$@") || exit
